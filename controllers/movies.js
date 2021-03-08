@@ -8,34 +8,54 @@ export const createMovie = (req, res) => {
 }
 
 export const getMovies = (req, res) => {
+    res.status(200)
     res.send(movies)
 }
 
 export const getMovie = (req, res) => {
     const { id } = req.params
     const movie = movies.find(movie => movie.id == id)
-    if (movie) res.send(movie)
-    else res.send({ response: "not found" })
+    if (movie) {
+        res.status(200)
+        res.send(movie)
+    }
+    else {
+        res.status(404)
+        res.send({ errMessage: 'element not found' })
+    }
 }
 
 export const deleteMovie = (req, res) => {
     const { id } = req.params
-    movies = movies.filter(movie => movie.id != id)
-    res.send(movies)
+    if (movies.some(movie => movie.id == id)) {
+        res.status(200)
+        movies = movies.filter(movie => movie.id != id)
+        res.send(movies)
+    } else {
+        res.status(404)
+        res.send({ errMessage: 'element not found' })
+    }
 }
 
 export const updateMovie = (req, res) => {
     const { id } = req.params
     const { title, description, img, stars, director, contentType } = req.body
     let movie = movies.find(movie => movie.id == id)
+    if (movie) {
+        if (title) movie.title = title
+        if (description) movie.description = description
+        if (img) movie.img = img
+        if (stars) movie.stars = stars
+        if (director) movie.director = director
+        if (contentType) movie.contentType = contentType
+        res.status(200)
+        res.send(movie)
 
-    if (title) movie.title = title
-    if (description) movie.description = description
-    if (img) movie.img = img
-    if (stars) movie.stars = stars
-    if (director) movie.director = director
-    if (contentType) movie.contentType = contentType
+    } else {
+        res.status(404)
+        res.send({ errMessage: 'element not found' })
+    }
 
-    res.send(movie)
+
 
 }
