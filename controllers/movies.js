@@ -4,6 +4,7 @@ let ids = 0
 export const createMovie = (req, res) => {
     const movie = { id: ids++, ...req.body };
     movies.push(movie)
+    res.status(201)
     res.send(movies)
 }
 
@@ -28,7 +29,7 @@ export const getMovie = (req, res) => {
 export const deleteMovie = (req, res) => {
     const { id } = req.params
     if (movies.some(movie => movie.id == id)) {
-        res.status(200)
+        res.status(204)
         movies = movies.filter(movie => movie.id != id)
         res.send(movies)
     } else {
@@ -48,7 +49,7 @@ export const updateMovie = (req, res) => {
         if (stars) movie.stars = stars
         if (director) movie.director = director
         if (contentType) movie.contentType = contentType
-        res.status(200)
+        res.status(204)
         res.send(movie)
 
     } else {
