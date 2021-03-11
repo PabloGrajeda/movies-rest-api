@@ -31,7 +31,7 @@ export const deleteMovie = (req, res) => {
     if (movies.some(movie => movie.id == id)) {
         res.status(204)
         movies = movies.filter(movie => movie.id != id)
-        res.send(movies)
+        //res.send(movies)
     } else {
         res.status(404)
         res.send({ errMessage: 'element not found' })
@@ -50,7 +50,7 @@ export const updateMovie = (req, res) => {
         if (director) movie.director = director
         if (contentType) movie.contentType = contentType
         res.status(204)
-        res.send(movie)
+        //res.send(movie)
 
     } else {
         res.status(404)
