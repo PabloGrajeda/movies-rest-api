@@ -1,6 +1,4 @@
 import Movie from '../models/movie.js'
-let movies = []
-let ids = 0
 
 export const createMovie = async (req, res) => {
     const movie = new Movie({
