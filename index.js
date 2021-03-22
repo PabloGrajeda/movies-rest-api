@@ -1,12 +1,12 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import moviesRoutes from './routes/movies.js'
 import mongoose from 'mongoose'
 
+dotenv.config()
 const PORT = 5000
-const DATABASE_URL = 'mongodb://localhost:27017/movies-mern'
 
-
-mongoose.connect(DATABASE_URL, { useNewUrlParser: true })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
     .then(() => console.log('Connected to Database'))
     .catch((err) => console.error(err))
 
