@@ -11,10 +11,10 @@ export const createMovie = async (req, res) => {
     });
     try {
         const newMovie = await movie.save();
-        res.status(201).json(newMovie)
+        return res.status(201).json(newMovie)
 
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        return res.status(400).json({ message: err.message })
     }
 }
 
