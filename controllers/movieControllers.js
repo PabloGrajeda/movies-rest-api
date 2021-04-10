@@ -1,17 +1,17 @@
-import Movie from '../models/movie.js'
+import { movieCreate, movieGetAll, movieDelete, movieUpdate } from '../repositories/movie.repository.js'
 
 export const createMovie = async (req, res) => {
-    const movie = new Movie({
+    const movie = {
         title: req.body.title,
         description: req.body.description,
         img: req.body.img,
         stars: req.body.stars,
         director: req.body.director,
         contentType: req.body.contentType
-    });
+    };
     try {
-        const newMovie = await movie.save();
-        return res.status(201).json(newMovie)
+        const newMovie = await movieCreate(movie)
+        res.status(201).json(newMovie)
 
     } catch (err) {
         return res.status(400).json({ message: err.message })
@@ -20,7 +20,7 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
     try {
-        const movies = await Movie.find()
+        const movies = await movieGetAll()
         res.status(200).json(movies)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -33,7 +33,7 @@ export const getMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
     try {
-        await res.movie.remove()
+        await movieDelete(res.movie)
         res.status(204).send()
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -41,16 +41,8 @@ export const deleteMovie = async (req, res) => {
 }
 
 export const updateMovie = async (req, res) => {
-    const { title, description, img, stars, director, contentType } = req.body
-    if (title) res.movie.title = title
-    if (description) res.movie.description = description
-    if (img) res.movie.img = img
-    if (stars) res.movie.stars = stars
-    if (director) res.movie.director = director
-    if (contentType) res.movie.contentType = contentType
-
     try {
-        const updatedMovie = await res.movie.save()
+        const updatedMovie = await movieUpdate(req.body, res.movie)
         res.status(200).json(updatedMovie)
     } catch (err) {
         res.status(500).json({ message: err.nessage })
