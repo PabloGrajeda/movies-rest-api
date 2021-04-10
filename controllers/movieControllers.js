@@ -1,16 +1,16 @@
-import Movie from '../models/Movie.js'
+import { movieCreate, movieGetAll, movieDelete, movieUpdate } from '../repositories/movie.repository.js'
 
 export const createMovie = async (req, res) => {
-    const movie = new Movie({
+    const movie = {
         title: req.body.title,
         description: req.body.description,
         img: req.body.img,
         stars: req.body.stars,
         director: req.body.director,
         contentType: req.body.contentType
-    });
+    };
     try {
-        const newMovie = await movie.save();
+        const newMovie = await movieCreate(movie)
         res.status(201).json(newMovie)
 
     } catch (err) {
@@ -20,7 +20,7 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
     try {
-        const movies = await Movie.find()
+        const movies = await movieGetAll()
         res.status(200).json(movies)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -33,7 +33,7 @@ export const getMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
     try {
-        await res.movie.remove()
+        await movieDelete(res.movie)
         res.status(204).send()
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -41,33 +41,10 @@ export const deleteMovie = async (req, res) => {
 }
 
 export const updateMovie = async (req, res) => {
-    const { title, description, img, stars, director, contentType } = req.body
-    if (title) res.movie.title = title
-    if (description) res.movie.description = description
-    if (img) res.movie.img = img
-    if (stars) res.movie.stars = stars
-    if (director) res.movie.director = director
-    if (contentType) res.movie.contentType = contentType
-
     try {
-        const updatedMovie = await res.movie.save()
+        const updatedMovie = await movieUpdate(req.body, res.movie)
         res.status(200).json(updatedMovie)
     } catch (err) {
         res.status(500).json({ message: err.nessage })
-    }
-}
-
-
-export async function getMovieMiddleware(req, res, next) {
-    let movie
-    try {
-        const { id } = req.params
-        movie = await Movie.findById(id)
-        if (!movie) return res.status(404).json({ message: "Movie not found" })
-        res.movie = movie
-        next()
-    } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: err.message })
     }
 }

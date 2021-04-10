@@ -1,13 +1,14 @@
 import express from 'express'
-import { createMovie, getMovies, getMovie, deleteMovie, updateMovie, getMovieMiddleware} from '../controllers/movieControllers.js'
+import { createMovie, getMovies, getMovie, deleteMovie, updateMovie } from '../controllers/movieControllers.js'
+import { getMovieMiddleware } from '../repositories/movie.repository.js'
 const router = express.Router()
 
+
+router.post('/', createMovie)
 
 router.get('/', getMovies)
 
 router.get('/:id', getMovieMiddleware, getMovie)
-
-router.post('/', createMovie)
 
 router.delete('/:id', getMovieMiddleware, deleteMovie)
 
