@@ -1,4 +1,4 @@
-import { movieCreate, movieGetAll, movieDelete, movieUpdate } from '../repositories/movie.repository.js'
+import movieRepo from '../repositories/movie.repository.js'
 
 export const createMovie = async (req, res) => {
     const movie = {
@@ -10,7 +10,7 @@ export const createMovie = async (req, res) => {
         contentType: req.body.contentType
     };
     try {
-        const newMovie = await movieCreate(movie)
+        const newMovie = await movieRepo.movieCreate(movie)
         return res.status(201).json(newMovie)
 
     } catch (err) {
@@ -20,7 +20,7 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
     try {
-        const movies = await movieGetAll()
+        const movies = await movieRepo.movieGetAll()
         return res.status(200).json(movies)
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -33,7 +33,7 @@ export const getMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
     try {
-        await movieDelete(res.movie)
+        await movieRepo.movieDelete(res.movie)
         return res.status(204).send()
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -42,7 +42,7 @@ export const deleteMovie = async (req, res) => {
 
 export const updateMovie = async (req, res) => {
     try {
-        const updatedMovie = await movieUpdate(req.body, res.movie)
+        const updatedMovie = await movieRepo.movieUpdate(req.body, res.movie)
         return res.status(200).json(updatedMovie)
     } catch (err) {
         return res.status(500).json({ message: err.nessage })

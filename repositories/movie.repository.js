@@ -1,21 +1,21 @@
 import MovieModel from '../models/Movie.js'
 
 
-export const movieCreate = async (movieData) => {
+const movieCreate = async (movieData) => {
     const movie = new MovieModel(movieData);
     return await movie.save();
 }
 
-export const movieGetAll = async () => {
+const movieGetAll = async () => {
     const movies = await MovieModel.find()
     return movies
 }
 
-export const movieDelete = async (movieModel) => {
+const movieDelete = async (movieModel) => {
     await movieModel.remove()
 }
 
-export const movieUpdate = async (movieData, movieModel) => {
+const movieUpdate = async (movieData, movieModel) => {
     const { title, description, img, stars, director, contentType } = movieData
     if (title) movieModel.title = title
     if (description) movieModel.description = description
@@ -27,7 +27,7 @@ export const movieUpdate = async (movieData, movieModel) => {
     return await movieModel.save()
 }
 
-export async function getMovieMiddleware(req, res, next) {
+async function getMovieMiddleware(req, res, next) {
     let movie
     try {
         const { id } = req.params
@@ -40,3 +40,12 @@ export async function getMovieMiddleware(req, res, next) {
         res.status(500).json({ message: err.message })
     }
 }
+
+const movieRepo = {
+    movieCreate,
+    movieGetAll,
+    movieDelete,
+    movieUpdate,
+    getMovieMiddleware
+}
+export default movieRepo
