@@ -1,49 +1,81 @@
 import { expect } from 'chai'
-import faker from 'faker'
-import * as sinon from 'sinon'
-import { rewiremock } from './rewiremock.js';
+import sinon from 'sinon'
+import * as moviesRepo from '../repositories/movie.repository.js'
 import 'mocha'
-
-const moviesController = rewiremock.proxy('../controllers/movies.js', {
-  '../models/movie.js':  {save : () =>{
-    return {
-      id: faker.random.uuid(),
-      title: faker.lorem.words(),
-      description: faker.lorem.paragraph(),
-      img: faker.image.imageUrl(),
-      stars: (Math.floor(Math.random() * (5 - 1)) + 1),
-      director: faker.lorem.words(),
-      contentType: aker.lorem.word(),
-      __v: 0
-    };
-  }}
-});
 
 describe("moviesController", function () {
   describe("createMovie", function () {
-    const body = {
-      title: faker.lorem.words(),
-      description: faker.lorem.paragraph(),
-      img: faker.image.imageUrl(),
-      stars: (Math.floor(Math.random() * (5 - 1)) + 1),
-      director: faker.lorem.words(),
-      contentType: aker.lorem.word(),
+    const stubValue = {
+      _id: '60710c00bd10166b7bd3fb18',
+      title: 'Doctor Strange: hechicero supremo',
+      description: 'En Katmandú, Nepal, el hechicero Kaecilius y sus fanáticos entran en el recinto secreto de Kamar-Taj y asesinan a su bibliotecario',
+      img: '"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1-MK7tHomhOcaLsoMzbNaTsfDIYG4nvx9iOXJEV93wtDdFTbC"',
+      stars: '4.7',
+      director: 'cott Derrickson',
+      contentType: 'movie',
+      __v: 0
     };
-
-    let req, res, json, status;
-    beforeEach(() => {
-      req = { body }
-      json = sinon.spy();
-      status = sinon.stub();
-      res = { json, status };
-      status.returns(res)
-    });
     it("should add a new movie", async function () {
+      const stub = sinon.stub(moviesRepo, "movieCreate").returns(stubValue)
       const movie = await moviesController.createMovie(req, res);
-      expect(movie.status).to.be.be.equal(201);
+      expect(movie.status).to.be.equal(201);
+      stub.restore()
     });
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// describe("moviesController", function () {
+//   describe("createMovie", function () {
+//     const body = {
+//       title: faker.lorem.words(),
+//       description: faker.lorem.paragraph(),
+//       img: faker.image.imageUrl(),
+//       stars: (Math.floor(Math.random() * (5 - 1)) + 1),
+//       director: faker.lorem.words(),
+//       contentType: aker.lorem.word(),
+//     };
+
+//     let req, res, json, status;
+//     beforeEach(() => {
+//       req = { body }
+//       json = sinon.spy();
+//       status = sinon.stub();
+//       res = { json, status };
+//       status.returns(res)
+//     });
+//     it("should add a new movie", async function () {
+//       const movie = await moviesController.createMovie(req, res);
+//       expect(movie.status).to.be.be.equal(201);
+//     });
+//   });
+// });
 
 
 
