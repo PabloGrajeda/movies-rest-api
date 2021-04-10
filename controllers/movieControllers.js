@@ -1,4 +1,4 @@
-import Movie from '../models/movie.js'
+import Movie from '../models/Movie.js'
 
 export const createMovie = async (req, res) => {
     const movie = new Movie({
@@ -54,5 +54,20 @@ export const updateMovie = async (req, res) => {
         res.status(200).json(updatedMovie)
     } catch (err) {
         res.status(500).json({ message: err.nessage })
+    }
+}
+
+
+export async function getMovieMiddleware(req, res, next) {
+    let movie
+    try {
+        const { id } = req.params
+        movie = await Movie.findById(id)
+        if (!movie) return res.status(404).json({ message: "Movie not found" })
+        res.movie = movie
+        next()
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: err.message })
     }
 }
