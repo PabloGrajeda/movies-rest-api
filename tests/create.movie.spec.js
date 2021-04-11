@@ -36,12 +36,12 @@ describe("moviesController", function () {
 
     req = { body }
     it("should add a new movie", async function () {
-      const stub = sinon.stub(moviesRepo, "movieCreate").returns(stubValue)
+      const stub = sinon.stub(moviesRepo, "createMovie").returns(stubValue)
       await createMovie(req, res)
       expect(status.calledOnce).to.be.true;
+      expect(json.args[0][0]['_id']).to.be.not.undefined
+      expect(json.args[0][0]['_id']).to.be.not.null
       expect(status.args[0][0]).to.equal(201)
-      expect(json.calledOnce).to.be.true;
-      expect(json.args[0][0].message).to.be.equal(undefined);
       stub.restore()
     });
 
@@ -56,7 +56,7 @@ describe("moviesController", function () {
     };
     req = { body }
     it("shouldn't add a new movie because of missing title", async function () {
-      const stub = sinon.stub(moviesRepo, "movieCreate").callsFake(() => {
+      const stub = sinon.stub(moviesRepo, "createMovie").callsFake(() => {
         throw new Error("Movie validation failed: title: Path `title` is required.")
       })
       await createMovie(req, res)
