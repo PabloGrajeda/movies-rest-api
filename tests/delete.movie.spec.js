@@ -36,7 +36,7 @@ describe("moviesController", function () {
       stub.restore()
     });
 
-    it("shouldn't update a movie", async function () {
+    it("shouldn't delete a movie", async function () {
       const stub = sinon.stub(moviesRepo, "deleteMovie").callsFake(() => {
         throw new Error("Internal Server Error")
       })
