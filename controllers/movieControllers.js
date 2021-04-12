@@ -45,6 +45,6 @@ export const updateMovie = async (req, res) => {
         const updatedMovie = await movieRepo.updateMovie(req.body, res.movie)
         return res.status(200).json(updatedMovie)
     } catch (err) {
-        return res.status(500).json({ message: err.nessage })
+        return res.status(500).json({ message: err.message })
     }
 }

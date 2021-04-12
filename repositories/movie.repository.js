@@ -27,7 +27,7 @@ const updateMovie = async (movieData, movieModel) => {
     return await movieModel.save()
 }
 
-const getMovieMiddleware = async () => {
+const getMovieMiddleware = async (req, res, next) => {
     let movie
     try {
         const { id } = req.params
