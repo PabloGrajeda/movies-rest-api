@@ -11,7 +11,11 @@ export const createMovie = async (req, res) => {
     };
     try {
         const newMovie = await movieRepo.createMovie(movie)
-        return res.status(201).json(newMovie)
+        const { token } = res
+        return res.status(201).json({
+            movie: newMovie,
+            token
+        })
 
     } catch (err) {
         return res.status(400).json({ message: err.message })
@@ -21,20 +25,30 @@ export const createMovie = async (req, res) => {
 export const getMovies = async (req, res) => {
     try {
         const movies = await movieRepo.getMovies()
-        return res.status(200).json(movies)
+        const { token } = res
+        return res.status(200).json({ movies, token })
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
 }
 
 export const getMovie = async (req, res) => {
-    return res.status(200).json(res.movie)
+    const { movie } = res
+    const { token } = res
+    return res.status(200).json({
+        movie,
+        token
+    })
 }
 
 export const deleteMovie = async (req, res) => {
     try {
         await movieRepo.deleteMovie(res.movie)
-        return res.status(204).send()
+        const { token } = res
+        return res.status(200).json({
+            message: 'movie deleted',
+            token
+        })
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
@@ -43,7 +57,11 @@ export const deleteMovie = async (req, res) => {
 export const updateMovie = async (req, res) => {
     try {
         const updatedMovie = await movieRepo.updateMovie(req.body, res.movie)
-        return res.status(200).json(updatedMovie)
+        const { token } = res
+        return res.status(200).json({
+            movie: updatedMovie,
+            token
+        })
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }

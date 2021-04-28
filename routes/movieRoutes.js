@@ -1,17 +1,18 @@
 import express from 'express'
 import { createMovie, getMovies, getMovie, deleteMovie, updateMovie } from '../controllers/movieControllers.js'
 import movieRepo from '../repositories/movie.repository.js'
+import { authenticate } from '../controllers/userController.js'
 const router = express.Router()
 
 
-router.post('/', createMovie)
+router.post('/', authenticate, createMovie)
 
-router.get('/', getMovies)
+router.get('/', authenticate, getMovies)
 
-router.get('/:id', movieRepo.getMovieMiddleware, getMovie)
+router.get('/:id', authenticate, movieRepo.getMovieMiddleware, getMovie)
 
-router.delete('/:id', movieRepo.getMovieMiddleware, deleteMovie)
+router.delete('/:id', authenticate, movieRepo.getMovieMiddleware, deleteMovie)
 
-router.patch('/:id', movieRepo.getMovieMiddleware, updateMovie)
+router.patch('/:id', authenticate, movieRepo.getMovieMiddleware, updateMovie)
 
 export default router;
