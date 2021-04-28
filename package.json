@@ -12,16 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chai": "^4.3.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "faker": "^5.5.3",
-    "mocha": "^8.3.2",
-    "mongoose": "^5.12.1",
-    "sinon": "^10.0.1"
+    "mongoose": "^5.12.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",
-    "rewiremock": "^3.14.3"
+    "rewiremock": "^3.14.3",
+    "sinon": "^10.0.1",
+    "mocha": "^8.3.2",
+    "chai": "^4.3.4"
   }
 }
