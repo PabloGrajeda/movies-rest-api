@@ -25,7 +25,7 @@ export const login = async (req, res) => {
     bcrypt.compare(password, user.password, function (err, result) {
         if (err) return res.status(500).json({ message: "Server Error" })
         if (result) {
-            const token = jwt.sign({ email: user.email }, process.env.JWTSECRET, { expiresIn: '1m' })
+            const token = jwt.sign({ email: user.email }, process.env.JWTSECRET, { expiresIn: '2m' })
             return res.status(200).json({ token })
         }
         else
@@ -37,7 +37,7 @@ export const authenticate = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1]
         const decode = jwt.verify(token, process.env.JWTSECRET)
-        const newToken = jwt.sign({ email: decode.email }, process.env.JWTSECRET, { expiresIn: '1m' })
+        const newToken = jwt.sign({ email: decode.email }, process.env.JWTSECRET, { expiresIn: '2m' })
         res.token = newToken
         next()
 
