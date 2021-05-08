@@ -4,6 +4,7 @@ import moviesRoutes from './routes/movieRoutes.js'
 import authRoutes from './routes/userRoutes.js'
 import dbConnection from './config/db.js'
 import cors from 'cors'
+import RedisClient from './redis_init.js'
 
 dbConnection()
 dotenv.config()

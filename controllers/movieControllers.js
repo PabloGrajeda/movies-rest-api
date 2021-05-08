@@ -1,4 +1,5 @@
 import movieRepo from '../repositories/movie.repository.js'
+import RedisClient from '../redis_init.js'
 
 export const createMovie = async (req, res) => {
     const movie = {
@@ -24,9 +25,22 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
     try {
-        const movies = await movieRepo.getMovies()
         const { token } = res
-        return res.status(200).json({ movies, token })
+        RedisClient.get('movies', async (err, reply) => {
+            if (reply) {
+                const movies = JSON.parse(reply)
+                console.log('cache resolved')
+                return res.status(200).json({ movies, token })
+            } else {
+                console.log('fetching database...')
+                setTimeout(async () => {
+                    const movies = await movieRepo.getMovies()
+                    RedisClient.set('movies', JSON.stringify(movies));
+                    console.log('database resolved')
+                    return res.status(200).json({ movies, token })
+                }, 5000);
+            }
+        })
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
