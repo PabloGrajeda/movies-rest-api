@@ -11,6 +11,7 @@ export const createMovie = async (req, res) => {
         contentType: req.body.contentType
     };
     try {
+        RedisClient.del("movies")
         const newMovie = await movieRepo.createMovie(movie)
         const { token } = res
         return res.status(201).json({
@@ -33,12 +34,12 @@ export const getMovies = async (req, res) => {
                 return res.status(200).json({ movies, token })
             } else {
                 console.log('fetching database...')
+                const movies = await movieRepo.getMovies()
                 setTimeout(async () => {
-                    const movies = await movieRepo.getMovies()
                     RedisClient.set('movies', JSON.stringify(movies));
                     console.log('database resolved')
                     return res.status(200).json({ movies, token })
-                }, 5000);
+                }, 3000);
             }
         })
     } catch (err) {
@@ -57,6 +58,7 @@ export const getMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
     try {
+        RedisClient.del("movies")
         await movieRepo.deleteMovie(res.movie)
         const { token } = res
         return res.status(200).json({
@@ -70,6 +72,7 @@ export const deleteMovie = async (req, res) => {
 
 export const updateMovie = async (req, res) => {
     try {
+        RedisClient.del("movies")
         const updatedMovie = await movieRepo.updateMovie(req.body, res.movie)
         const { token } = res
         return res.status(200).json({
